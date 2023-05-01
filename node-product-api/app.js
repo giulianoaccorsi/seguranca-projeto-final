@@ -6,8 +6,8 @@ const port = 3001;
 const bodyParser = require("body-parser");
 const db = require("./db");
 const checkJwt = auth({
-  audience: "https://localhost:4200",
-  issuerBaseURL: `https://dev-qcy6qqh8432i0bfc.us.auth0.com`,
+  audience: 'https://fiap/api',
+  issuerBaseURL: 'https://dev-zny4hpxlvmzmmxbl.us.auth0.com/',
 });
 var privateKey = fs.readFileSync("./sslcert/selfsigned.key", "utf8");
 var certificate = fs.readFileSync("./sslcert/selfsigned.crt", "utf8");
