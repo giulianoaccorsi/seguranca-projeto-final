@@ -6,8 +6,8 @@ const port = 3001;
 const bodyParser = require("body-parser");
 const db = require("./db");
 const checkJwt = auth({
-  audience: 'https://fiap/api',
-  issuerBaseURL: 'https://dev-zny4hpxlvmzmmxbl.us.auth0.com/',
+  audience: "https://fiap/api",
+  issuerBaseURL: "https://dev-zny4hpxlvmzmmxbl.us.auth0.com/",
 });
 var privateKey = fs.readFileSync("./sslcert/selfsigned.key", "utf8");
 var certificate = fs.readFileSync("./sslcert/selfsigned.crt", "utf8");
@@ -46,6 +46,15 @@ app.post("/products", checkJwt, async (req, res, next) => {
     var name = req.body.name;
     var description = req.body.description;
     var value = req.body.value;
+
+    // Validação dos campos de entrada
+    if (
+      !validator.isLength(name, { min: 1, max: 100 }) ||
+      !validator.isLength(description, { min: 1, max: 1000 }) ||
+      !validator.isNumeric(value, { no_symbols: true })
+    ) {
+      return res.status(400).json({ message: "Dados de entrada inválidos!" });
+    }
 
     await db.insertProduct(name, description, value);
     return res.status(200).json({ message: "Produto cadastrado com sucesso!" });
